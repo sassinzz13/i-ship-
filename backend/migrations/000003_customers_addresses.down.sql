@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS addresses;
+DROP TABLE IF EXISTS customers;
+DROP SEQUENCE IF EXISTS customer_code_seq;
