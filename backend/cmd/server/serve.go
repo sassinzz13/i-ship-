@@ -6,8 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"github.com/sassinzz13/i-ship/backend/internal/features/addresses"
 	"github.com/sassinzz13/i-ship/backend/internal/features/audit"
 	"github.com/sassinzz13/i-ship/backend/internal/features/authentication"
+	"github.com/sassinzz13/i-ship/backend/internal/features/customers"
 	"github.com/sassinzz13/i-ship/backend/internal/features/users"
 	"github.com/sassinzz13/i-ship/backend/internal/platform/config"
 	"github.com/sassinzz13/i-ship/backend/internal/platform/database"
@@ -61,6 +63,12 @@ func buildApp(cfg config.Config, pool *pgxpool.Pool) *app {
 	// Users
 	userSvc := users.NewService(pool, txm, users.NewRepository(), recorder)
 	users.Register(api, users.NewHandler(userSvc), authenticate)
+
+	// Customers and their address books
+	customerSvc := customers.NewService(pool, txm, customers.NewRepository(), userSvc, recorder)
+	customers.Register(api, customers.NewHandler(customerSvc), authenticate)
+	addressSvc := addresses.NewService(pool, txm, addresses.NewRepository(), recorder)
+	addresses.Register(api, addresses.NewHandler(addressSvc), authenticate)
 
 	return &app{engine: engine, users: userSvc}
 }
