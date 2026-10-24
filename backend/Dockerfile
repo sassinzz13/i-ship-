@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 # Builder runs natively and cross-compiles for the target platform.
-FROM --platform=$BUILDPLATFORM golang:1.26-alpine AS build
+FROM --platform=$BUILDPLATFORM golang:1.26.9-alpine3.24 AS build
 WORKDIR /src
 COPY go.mod go.sum ./
 RUN --mount=type=cache,target=/go/pkg/mod go mod download

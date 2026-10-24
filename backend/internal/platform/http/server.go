@@ -14,6 +14,7 @@ import (
 
 	"github.com/sassinzz13/i-ship/backend/internal/platform/config"
 	"github.com/sassinzz13/i-ship/backend/internal/platform/middleware"
+	"github.com/sassinzz13/i-ship/backend/internal/platform/requestctx"
 	apperr "github.com/sassinzz13/i-ship/backend/internal/shared/errors"
 	"github.com/sassinzz13/i-ship/backend/internal/shared/response"
 )
@@ -35,6 +36,7 @@ func NewEngine(cfg config.Config, db Pinger) *gin.Engine {
 	_ = r.SetTrustedProxies(cfg.TrustedProxies)
 	r.Use(
 		middleware.RequestID(),
+		requestctx.Middleware(),
 		middleware.Recovery(),
 		middleware.AccessLog(),
 		middleware.SecureHeaders(cfg.IsProduction()),

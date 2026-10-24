@@ -93,8 +93,14 @@ func message(fe validator.FieldError) string {
 	case "email":
 		return "must be a valid email address"
 	case "min":
+		if fe.Kind() == reflect.String {
+			return "must be at least " + fe.Param() + " characters"
+		}
 		return "must be at least " + fe.Param()
 	case "max":
+		if fe.Kind() == reflect.String {
+			return "must be at most " + fe.Param() + " characters"
+		}
 		return "must be at most " + fe.Param()
 	case "gt":
 		return "must be greater than " + fe.Param()
