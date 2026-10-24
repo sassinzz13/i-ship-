@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/sassinzz13/i-ship/backend/internal/platform/config"
+	"github.com/sassinzz13/i-ship/backend/internal/platform/security"
 )
 
 // runHealthcheck lets the distroless container probe itself without curl.
@@ -23,4 +24,10 @@ func runHealthcheck(ctx context.Context, cfg config.Config) error {
 		return fmt.Errorf("health status %d", resp.StatusCode)
 	}
 	return nil
+}
+
+// ctxWithPrincipal returns a context carrying p, for code paths (seeding)
+// that call services outside an HTTP request.
+func ctxWithPrincipal(ctx context.Context, p security.Principal) context.Context {
+	return security.WithPrincipal(ctx, p)
 }

@@ -84,3 +84,8 @@ func FromContext(ctx context.Context) (Principal, bool) {
 	p, ok := ctx.Value(ctxKey{}).(Principal)
 	return p, ok
 }
+
+// WithPrincipal returns ctx carrying p (for non-HTTP callers such as seeding).
+func WithPrincipal(ctx context.Context, p Principal) context.Context {
+	return context.WithValue(ctx, ctxKey{}, p)
+}
